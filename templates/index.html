@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <video id="video" controls></video>
+    <img src="" alt="" id="img" />
+    <input type="text" name="" id="text" value="" />
+    <button id="click">click</button>
+    <canvas id="my-canvas" width="300" height="20"></canvas>
+    <div class="buffered">
+      <span id="buffered-amount"></span>
+    </div>
+    <div class="progress">
+      <span id="progress-amount"></span>
+    </div>
+    <style>
+      .buffered {
+        height: 20px;
+        position: relative;
+        background: rgb(77, 82, 78);
+        width: 300px;
+      }
+
+      #buffered-amount {
+        display: block;
+        height: 100%;
+        background-color: rgb(255, 0, 34);
+        width: 0;
+      }
+
+      .progress {
+        margin-top: -20px;
+        height: 20px;
+        position: relative;
+        width: 300px;
+      }
+
+      #progress-amount {
+        display: block;
+        height: 100%;
+        background-color: rgb(0, 17, 255);
+        width: 0;
+      }
+    </style>
+  </body>
+  <script>
+    const text = document.querySelector("#text");
+    const btn = document.getElementById("click");
+    const v = document.getElementById("video");
+    const s = document.getElementById("s");
+    const img = document.getElementById("img");
+    let link = window.location.pathname + "stream/";
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      v.src = link + text.value + "/";
+      v.play();
+      text.value = "";
+    });
+    var myAudio = v;
+
+    // window.onload = function () {
+    //   var myAudio = v;
+    //   var myCanvas = document.getElementById("my-canvas");
+    //   var context = myCanvas.getContext("2d");
+    //   context.fillStyle = "lightgray";
+    //   context.fillRect(0, 0, myCanvas.width, myCanvas.height);
+    //   context.fillStyle = "red";
+    //   context.strokeStyle = "white";
+    //   myAudio.addEventListener("loadedmetadata", function () {
+    //     console.log("loaded");
+    //     myAudio.play();
+    //   });
+    //   // display TimeRanges
+
+    //   myAudio.addEventListener("seeked", function () {
+    //     for (i = 0; i < myAudio.buffered.length; i++) {
+    //       var startX =
+    //         (myAudio.buffered.start(i) * myCanvas.width) / myAudio.duration;
+    //       var endX =
+    //         (myAudio.buffered.end(i) * myCanvas.width) / myAudio.duration;
+    //       var width = endX - startX;
+    //       //   console.log(myCanvas.width / myAudio.duration);
+    //       context.fillRect(startX, 5, width, myCanvas.height);
+    //       context.rect(startX, 5, width, myCanvas.height);
+    //       context.stroke();
+    //     }
+    //   });
+    // };
+    window.onload = function () {
+      var myAudio = v;
+
+      myAudio.addEventListener("progress", function () {
+        var duration = myAudio.duration;
+        if (duration > 0) {
+          for (var i = 0; i < myAudio.buffered.length; i++) {
+            if (
+              myAudio.buffered.start(myAudio.buffered.length - 1 - i) <
+              myAudio.currentTime
+            ) {
+              document.getElementById("buffered-amount").style.width =
+                (myAudio.buffered.end(myAudio.buffered.length - 1 - i) /
+                  duration) *
+                  100 +
+                "%";
+              break;
+            }
+          }
+        }
+      });
+
+      myAudio.addEventListener("timeupdate", function () {
+        var duration = myAudio.duration;
+        if (duration > 0) {
+          document.getElementById("progress-amount").style.width =
+            (myAudio.currentTime / duration) * 100 + "%";
+        }
+      });
+    };
+
+    window.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        btn.click();
+      }
+    });
+  </script>
+</html>
