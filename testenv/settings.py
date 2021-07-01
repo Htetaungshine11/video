@@ -82,7 +82,7 @@ DATABASES = {
     }
 }
 import dj_database_url
-databasebackup =dj_database_url.config(connn_max_age=600) 
+databasebackup =dj_database_url.config(conn_max_age=600) 
 DATABASES['default'].update(databasebackup)
 
 # Password validation
