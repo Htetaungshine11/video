@@ -126,4 +126,4 @@ STATICFILES_DIRS = [
     BASE_DIR/"static",
 ]
 
-STATIC_ROOT = BASE_DIR/"root"
+STATIC_ROOT = BASE_DIR/"main"
