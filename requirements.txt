@@ -33,6 +33,7 @@ Pillow==8.1.0
 pipenv==2020.11.15
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
+pyaudio
 PyAutoGUI==0.9.52
 pycparser==2.20
 PyGetWindow==0.0.9
